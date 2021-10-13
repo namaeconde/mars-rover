@@ -1,6 +1,6 @@
-## Mars Rover
+## Plateau Rover
 
-A squad of robotic rovers are to be landed by NASA on a plateau on Mars.
+A squad of robotic rovers are to be landed by NASA on a plateau on Plateau.
 
 This plateau, which is curiously rectangular, must be navigated by the rovers so that their on board cameras can get a complete view of the surrounding terrain to send back to Earth.
 
@@ -38,18 +38,11 @@ Rover2:5 1 E
 ```
 Task:
 
-Develop a command line app that can take the various inputs from the command line and generate the desired outputs. The application must accept a sequence of inputs from the command line or a file. Example input from file:
+To run the application:
+Preq: to have .txt that has inputs needed to deploy rovers on mars plateau.
 ```
-$ app < input.txt
+$ npm start input.txt
 Rover1:1 3 N
 Rover2:5 1 E
 $
 ```
-See `input.txt` in this repo for a sample test input.
-
-Expectations:
-
-- App should be working
-- Code should be modular and readable
-- Unit tests
-- Your choice of language is one with which you are comfortable
