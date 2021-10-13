@@ -1,0 +1,24 @@
+{
+  "name": "mars_rover",
+  "version": "1.0.0",
+  "description": "A squad of robotic rovers that will navigate mars",
+  "main": "app/index.ts",
+  "scripts": {
+    "test": "npm test",
+    "start": "node app/index.ts"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/namaeconde/mars_rover.git"
+  },
+  "author": "Namae Conde",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/namaeconde/mars_rover/issues"
+  },
+  "homepage": "https://github.com/namaeconde/mars_rover#readme",
+  "devDependencies": {
+    "@types/node": "^16.10.5",
+    "typescript": "^4.4.4"
+  }
+}
