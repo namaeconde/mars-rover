@@ -1,19 +1,48 @@
-import { processData, readFromFile } from './utils/FileUtil';
+import { readFromFile } from './utils/FileUtil';
 import { Plateau } from "./Plateau";
-import {Rover} from "./Rover";
+import { Orientation, Rover } from "./Rover";
 
 function createPlateau(data: string): Plateau {
     console.log("Initializing mars plateau. . .");
-    const plateauData = processData(data);
-    console.log(plateauData);
-    return new Plateau(plateauData.width, plateauData.height);
+    if (!data.startsWith('Plateau')) {
+        throw new Error("Insufficient data to create plateau.");
+    }
+
+    // Return plateau dimension
+    const dimensions = data.replace('Plateau:', '').split(' ');
+
+    if (dimensions.length < 2) {
+        throw Error("Invalid Plateau dimensions");
+    }
+    const width = parseInt(dimensions[0]); //TODO: Need to check if data is int
+    const height = parseInt(dimensions[1]); //TODO: Need to check if data is int
+    return new Plateau(width, height);
 }
 
 function createRovers(data: string[]): Rover[] {
+    if (!data || data.length < 1) {
+        throw new Error("Insufficient data to create rovers.");
+    }
+
     console.log("Initializing rovers. . .");
     let rovers: Rover[] = [];
-    rovers.push(new Rover("1"));
-    rovers.push(new Rover("2"));
+    while (data.length > 0) {
+        const [landingData, instructionsData, ...roversData] = data;
+
+        const roverName = landingData.split(":")[0].replace("Landing", "").trim();
+
+        //TODO: Check if landing data has missing data
+        const [x, y, orientation] = landingData.split(":")[1].trim().split(" ");
+
+        //TODO: Check if instructions data is missing
+        const instructions = instructionsData.split(":")[1].trim().split("");
+
+        let rover = new Rover(roverName,
+            { position: { x: parseInt(x), y: parseInt(y) }, orientation: <Orientation>orientation },
+            instructions);
+        rovers.push(rover);
+        data.splice(0, 2);
+    }
     return rovers;
 }
 
@@ -29,16 +58,11 @@ const main = () => {
         throw new Error("Invalid file input, it should ends with .txt");
     }
 
-    const data = readFromFile(fileName);
-    if (data.length < 1) {
-        throw new Error("Insufficient data to initialize mars rover.")
-    }
-
-    let plateau = createPlateau(data[0]);
+    const [plateauData, ...roversData] = readFromFile(fileName);
+    let plateau = createPlateau(plateauData);
     console.log(plateau);
-    data.splice(0, 1);
 
-    let rovers = createRovers(data);
+    let rovers = createRovers(roversData);
     console.log(rovers);
 }
 

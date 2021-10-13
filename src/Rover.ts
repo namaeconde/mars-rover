@@ -22,27 +22,43 @@ export enum Orientation {
 
 export class Rover {
     name: string;
-    orientation: Orientation;
     position: Point;
+    orientation: Orientation;
+    landing: {
+        position: Point,
+        orientation: Orientation
+    }
+    instructions: string[]
 
-    constructor(name: string) {
+    /**
+     * Set rover name, data where to land, instructions how to navigate plateau
+     *
+     * @param name
+     * @param landing
+     * @param instructions
+     */
+    constructor(name: string,
+                landing: { position: Point, orientation: Orientation},
+                instructions: string[]) {
         this.name = name;
+        this.landing = landing;
+        this.instructions = instructions;
     }
 
-    land(plateau: Plateau, position: Point, orientation: Orientation): void {
-        if (this.willFall(plateau, position)) {
+    land(plateau: Plateau): void {
+        if (this.willFall(plateau, this.landing.position)) {
             throw new Error('Rover cannot land, will fall from plateau.');
         }
 
-        if (plateau.hasRover(position)) {
+        if (plateau.hasRover(this.landing.position)) {
             throw new Error('Rover cannot land, will collide with another rover.');
         }
 
-        this.position = position;
-        this.orientation = orientation;
+        this.position = this.landing.position;
+        this.orientation = this.landing.orientation;
     }
 
-    navigate(plateau: Plateau, instructions: string[]): Point {
+    navigate(plateau: Plateau): Point {
         // Update rover position based on instruction
         return this.position;
     }
