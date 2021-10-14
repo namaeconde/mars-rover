@@ -60,17 +60,15 @@ const main = () => {
 
     const [plateauData, ...roversData] = readFromFile(fileName);
     let plateau = createPlateau(plateauData);
-    console.log(plateau);
 
     let rovers = createRovers(roversData);
-    console.log(rovers);
 
     // Deploy rovers to mars plateau
     rovers.map((rover) => {
         rover.landOn(plateau);
+        rover.navigateOn(plateau);
+        console.log(rover.getStatus());
     });
-
-    console.log(plateau);
 }
 
 if (process.env.JEST_WORKER_ID === undefined) {

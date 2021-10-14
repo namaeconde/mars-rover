@@ -20,6 +20,12 @@ export enum Orientation {
     S = "S",
 }
 
+export enum Instruction {
+    L = "L",
+    R = "R",
+    M = "M",
+}
+
 export class Rover {
     name: string;
     position: Point;
@@ -50,7 +56,7 @@ export class Rover {
             throw new Error('Rover cannot land, will fall from plateau.');
         }
 
-        if (plateau.hasRover(this.landing.position)) {
+        if (plateau.hasRoverAt(this.landing.position)) {
             throw new Error('Rover cannot land, will collide with another rover.');
         }
 
@@ -61,7 +67,90 @@ export class Rover {
 
     navigateOn(plateau: Plateau): Point {
         // Update rover position based on instruction
+        this.instructions.map((instruction) => {
+            switch (instruction) {
+                case Instruction.L:
+                    this.turnLeft();
+                    break;
+                case Instruction.R:
+                    this.turnRight();
+                    break;
+                case Instruction.M:
+                    this.move(plateau);
+                    break;
+                default:
+                    break;
+            }
+        })
         return this.position;
+    }
+
+    turnLeft(): void {
+        switch (this.orientation) {
+            case Orientation.N:
+                this.orientation = Orientation.W;
+                break;
+            case Orientation.E:
+                this.orientation = Orientation.N;
+                break;
+            case Orientation.W:
+                this.orientation = Orientation.S;
+                break;
+            case Orientation.S:
+                this.orientation = Orientation.E;
+                break;
+            default:
+                break;
+        }
+    }
+
+    turnRight(): void {
+        switch (this.orientation) {
+            case Orientation.N:
+                this.orientation = Orientation.E;
+                break;
+            case Orientation.E:
+                this.orientation = Orientation.S;
+                break;
+            case Orientation.W:
+                this.orientation = Orientation.N;
+                break;
+            case Orientation.S:
+                this.orientation = Orientation.W;
+                break;
+            default:
+                break;
+        }
+    }
+
+    move(plateau:Plateau): void {
+        let newPosition = { ...this.position };
+        switch (this.orientation) {
+            case Orientation.N:
+                newPosition.y++;
+                break;
+            case Orientation.E:
+                newPosition.x++;
+                break;
+            case Orientation.S:
+                newPosition.y--;
+                break;
+            case Orientation.W:
+                newPosition.x--;
+                break;
+            default:
+                break;
+        }
+
+        if (this.willFallFrom(plateau, newPosition)) {
+            throw new Error(`${this.name} can no longer move or it will fall from plateau.`);
+        }
+
+        if (plateau.hasRoverAt(newPosition)) {
+            throw new Error(`${this.name} can no longer move or it will collide with another rover at x:${newPosition.x} y:${newPosition.y}.`);
+        }
+
+        this.position = newPosition;
     }
 
     willFallFrom(plateau: Plateau, position: Point): boolean {
@@ -69,5 +158,9 @@ export class Rover {
             position.x > plateau.width ||
             position.y < 0 ||
             position.y > plateau.height;
+    }
+
+    getStatus(): string {
+        return `${this.name} is at x:${this.position.x} y:${this.position.y} facing ${this.orientation}.`;
     }
 }

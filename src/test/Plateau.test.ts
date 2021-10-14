@@ -23,7 +23,7 @@ describe('plateau', () => {
         rover1.landOn(plateau);
 
         // THEN
-        expect(plateau.hasRover(position)).toBeTruthy();
+        expect(plateau.hasRoverAt(position)).toBeTruthy();
     })
 
     it('should return false if point doesnt have any rover', () => {
@@ -38,7 +38,7 @@ describe('plateau', () => {
         rover1.landOn(plateau1);
 
         // THEN
-        expect(plateau1.hasRover({x: 1, y: 0})).toBeFalsy();
-        expect(plateau2.hasRover({x: 0, y: 0})).toBeFalsy();
+        expect(plateau1.hasRoverAt({x: 1, y: 0})).toBeFalsy();
+        expect(plateau2.hasRoverAt({x: 0, y: 0})).toBeFalsy();
     })
 })

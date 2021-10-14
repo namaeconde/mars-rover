@@ -18,7 +18,7 @@ export class Plateau {
         this.rovers = [];
     }
 
-    hasRover(position: Point): boolean {
+    hasRoverAt(position: Point): boolean {
         return this.rovers.some((rover) => {
             let roverPosition = rover.position;
             return position.x == roverPosition.x &&
