@@ -56,6 +56,7 @@ export class Rover {
 
         this.position = this.landing.position;
         this.orientation = this.landing.orientation;
+        plateau.rovers.push(this);
     }
 
     navigate(plateau: Plateau): Point {

@@ -64,6 +64,13 @@ const main = () => {
 
     let rovers = createRovers(roversData);
     console.log(rovers);
+
+    // Deploy rovers to mars plateau
+    rovers.map((rover) => {
+        rover.land(plateau);
+    });
+
+    console.log(plateau);
 }
 
 main();

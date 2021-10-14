@@ -15,6 +15,7 @@ export class Plateau {
 
         this.width = width;
         this.height = height;
+        this.rovers = [];
     }
 
     hasRover(position: Point): boolean {
