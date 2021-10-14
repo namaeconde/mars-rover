@@ -47,7 +47,7 @@ export function createRovers(data: string[]): Rover[] {
             { position: { x: parseInt(x), y: parseInt(y) }, orientation: <Orientation>orientation },
             instructions);
         rovers.push(rover);
-        data.splice(0, 2);
+        data = roversData;
     }
     return rovers;
 }
