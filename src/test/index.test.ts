@@ -28,9 +28,22 @@ describe('create plateau based on input', () => {
         }
     })
 
-    it('should throw error from invalid plateau dimensions', () => {
+    it('should throw error from insufficient plateau dimensions', () => {
         // GIVEN
         const data = 'Plateau: 5'
+
+        try {
+            // WHEN
+            createPlateau(data);
+        } catch (error) {
+            // THEN
+            expect(error.message).toEqual('Insufficient Plateau dimensions.');
+        }
+    })
+
+    it('should throw error from invalid plateau dimensions', () => {
+        // GIVEN
+        const data = 'Plateau: test test'
 
         try {
             // WHEN

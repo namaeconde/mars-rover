@@ -9,13 +9,19 @@ export function createPlateau(data: string): Plateau {
     }
 
     // Return plateau dimension
-    const dimensions = data.replace('Plateau:', '').split(' ');
+    const dimensions = data.replace('Plateau:', '').trim().split(' ');
 
     if (dimensions.length < 2) {
+        throw Error("Insufficient Plateau dimensions.");
+    }
+
+    if (isNaN(Number(dimensions[0]))||
+        isNaN(Number(dimensions[1]))) {
         throw Error("Invalid Plateau dimensions.");
     }
-    const width = parseInt(dimensions[0]); //TODO: Need to check if data is int
-    const height = parseInt(dimensions[1]); //TODO: Need to check if data is int
+
+    const width = Number(dimensions[0]);
+    const height = Number(dimensions[1]);
     return new Plateau(width, height);
 }
 
