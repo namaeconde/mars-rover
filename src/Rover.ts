@@ -66,6 +66,10 @@ export class Rover {
     }
 
     navigateOn(plateau: Plateau): String {
+        if (!this.hasLanded()) {
+            throw new Error(`${this.name} cannot execute instructions if it has not yet landed on a plateau.`);
+        }
+
         // Update rover position based on instruction
         this.instructions.map((instruction) => {
             switch (instruction) {
@@ -126,6 +130,10 @@ export class Rover {
     }
 
     move(plateau:Plateau): Point {
+        if (!this.hasLanded()) {
+            throw new Error(`${this.name} cannot move if it has not yet landed on a plateau.`);
+        }
+
         let newPosition = { ...this.position };
         switch (this.orientation) {
             case Orientation.N:
@@ -164,9 +172,13 @@ export class Rover {
     }
 
     getStatus(): string {
-        if (!this.position && !this.orientation) {
+        if (!this.hasLanded()) {
             return `${this.name} not yet landed.`;
         }
         return `${this.name} is at x:${this.position.x} y:${this.position.y} facing ${this.orientation}.`;
+    }
+
+    hasLanded(): boolean {
+        return !!(this.position && this.orientation);
     }
 }
