@@ -71,6 +71,10 @@ const main = () => {
     });
 }
 
+/**
+ * Check if not triggered by Jest,
+ * else do not execute.
+ */
 if (process.env.JEST_WORKER_ID === undefined) {
     main();
 }

@@ -1,5 +1,5 @@
 import { Plateau } from "../Plateau";
-import {Orientation, Rover} from "../Rover";
+import { Orientation, Rover } from "../Rover";
 
 describe('plateau', () => {
     it('should create plateau given a valid input', () => {

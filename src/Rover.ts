@@ -53,11 +53,11 @@ export class Rover {
 
     landOn(plateau: Plateau): void {
         if (this.willFallFrom(plateau, this.landing.position)) {
-            throw new Error('Rover cannot land, will fall from plateau.');
+            throw new Error(`${this.name} cannot land, will fall from plateau.`);
         }
 
         if (plateau.hasRoverAt(this.landing.position)) {
-            throw new Error('Rover cannot land, will collide with another rover.');
+            throw new Error(`${this.name} cannot land, will collide with another rover.`);
         }
 
         this.position = this.landing.position;
@@ -161,6 +161,9 @@ export class Rover {
     }
 
     getStatus(): string {
+        if (!this.position && !this.orientation) {
+            return `${this.name} not yet landed.`;
+        }
         return `${this.name} is at x:${this.position.x} y:${this.position.y} facing ${this.orientation}.`;
     }
 }
