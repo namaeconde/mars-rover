@@ -2,7 +2,7 @@ import { readFromFile } from './utils/FileUtil';
 import { Plateau } from "./Plateau";
 import { Orientation, Rover } from "./Rover";
 
-function createPlateau(data: string): Plateau {
+export function createPlateau(data: string): Plateau {
     console.log("Initializing mars plateau. . .");
     if (!data.startsWith('Plateau')) {
         throw new Error("Insufficient data to create plateau.");
@@ -12,14 +12,14 @@ function createPlateau(data: string): Plateau {
     const dimensions = data.replace('Plateau:', '').split(' ');
 
     if (dimensions.length < 2) {
-        throw Error("Invalid Plateau dimensions");
+        throw Error("Invalid Plateau dimensions.");
     }
     const width = parseInt(dimensions[0]); //TODO: Need to check if data is int
     const height = parseInt(dimensions[1]); //TODO: Need to check if data is int
     return new Plateau(width, height);
 }
 
-function createRovers(data: string[]): Rover[] {
+export function createRovers(data: string[]): Rover[] {
     if (!data || data.length < 1) {
         throw new Error("Insufficient data to create rovers.");
     }
@@ -73,4 +73,6 @@ const main = () => {
     console.log(plateau);
 }
 
-main();
+if (process.env.JEST_WORKER_ID === undefined) {
+    main();
+}

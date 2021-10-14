@@ -14,10 +14,10 @@ export type Point = {
 };
 
 export enum Orientation {
-    N = "north",
-    E = "east",
-    W = "west",
-    S = "south",
+    N = "N",
+    E = "E",
+    W = "W",
+    S = "S",
 }
 
 export class Rover {
