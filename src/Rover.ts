@@ -65,7 +65,7 @@ export class Rover {
         plateau.rovers.push(this);
     }
 
-    navigateOn(plateau: Plateau): Point {
+    navigateOn(plateau: Plateau): String {
         // Update rover position based on instruction
         this.instructions.map((instruction) => {
             switch (instruction) {
@@ -82,7 +82,7 @@ export class Rover {
                     break;
             }
         })
-        return this.position;
+        return this.getStatus();
     }
 
     turnLeft(): void {

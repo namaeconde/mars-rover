@@ -72,8 +72,8 @@ const main = () => {
     // Deploy rovers to mars plateau
     rovers.map((rover) => {
         rover.landOn(plateau);
-        rover.navigateOn(plateau);
-        console.log(rover.getStatus());
+        const status = rover.navigateOn(plateau);
+        console.log(status);
     });
 }
 
