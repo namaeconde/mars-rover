@@ -37,14 +37,21 @@ export function createRovers(data: string[]): Rover[] {
 
         const roverName = landingData.split(":")[0].replace("Landing", "").trim();
 
-        //TODO: Check if landing data has missing data
         const [x, y, orientation] = landingData.split(":")[1].trim().split(" ");
 
-        //TODO: Check if instructions data is missing
+        if (isNaN(Number(x))||
+            isNaN(Number(y))) {
+            throw Error("Invalid landing positions.");
+        }
+
+        if (!Object.values(Orientation).includes(<Orientation>orientation)) {
+            throw Error("Invalid orientation.");
+        }
+
         const instructions = instructionsData.split(":")[1].trim().split("");
 
         let rover = new Rover(roverName,
-            { position: { x: parseInt(x), y: parseInt(y) }, orientation: <Orientation>orientation },
+            { position: { x: Number(x), y: Number(y) }, orientation: <Orientation>orientation },
             instructions);
         rovers.push(rover);
         data = roversData;
