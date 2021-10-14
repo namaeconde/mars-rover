@@ -85,7 +85,7 @@ export class Rover {
         return this.getStatus();
     }
 
-    turnLeft(): void {
+    turnLeft(): Orientation {
         switch (this.orientation) {
             case Orientation.N:
                 this.orientation = Orientation.W;
@@ -102,9 +102,10 @@ export class Rover {
             default:
                 break;
         }
+        return this.orientation;
     }
 
-    turnRight(): void {
+    turnRight(): Orientation {
         switch (this.orientation) {
             case Orientation.N:
                 this.orientation = Orientation.E;
@@ -121,9 +122,10 @@ export class Rover {
             default:
                 break;
         }
+        return this.orientation;
     }
 
-    move(plateau:Plateau): void {
+    move(plateau:Plateau): Point {
         let newPosition = { ...this.position };
         switch (this.orientation) {
             case Orientation.N:
@@ -151,6 +153,7 @@ export class Rover {
         }
 
         this.position = newPosition;
+        return this.position;
     }
 
     willFallFrom(plateau: Plateau, position: Point): boolean {

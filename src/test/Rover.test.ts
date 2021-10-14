@@ -1,7 +1,8 @@
-import {Instruction, Orientation, Rover} from "../Rover";
-import {Plateau} from "../Plateau";
+import { Instruction, Orientation, Point, Rover } from "../Rover";
+import { Plateau } from "../Plateau";
 
 const { L, R, M } = Instruction;
+const { N, E, W, S } = Orientation;
 
 describe('rover', () => {
     it('should create rover given a valid input', () => {
@@ -74,4 +75,50 @@ describe('rover landing', () => {
             expect(error.message).toEqual(`Rover 2 cannot land, will collide with another rover.`);
         }
     })
+})
+
+describe('rover turns to correct direction', () => {
+    test.each([
+        {orientation: N, expected: W},
+        {orientation: E, expected: N},
+        {orientation: W, expected: S},
+        {orientation: S, expected: E},
+    ])('$orientation turn left becomes $expected',
+        ({orientation, expected}) => {
+        const rover = new Rover("Mars Rover",
+            { position: {x: 0, y:0}, orientation: orientation }, []);
+        const plateau = new Plateau(1,1);
+        rover.landOn(plateau);
+        expect(rover.turnLeft()).toEqual(expected);
+    });
+
+    test.each([
+        {orientation: N, expected: E},
+        {orientation: E, expected: S},
+        {orientation: W, expected: N},
+        {orientation: S, expected: W},
+    ])('$orientation turn right becomes $expected',
+        ({orientation, expected}) => {
+            const rover = new Rover("Mars Rover",
+                { position: {x: 0, y:0}, orientation: orientation }, []);
+            const plateau = new Plateau(1,1);
+            rover.landOn(plateau);
+            expect(rover.turnRight()).toEqual(expected);
+        });
+})
+
+describe('rover moves towards correct position', () => {
+    test.each([
+        {orientation: N, position: {x: 0, y:0}, expected: {x: 0, y:1} as Point},
+        {orientation: E, position: {x: 0, y:0}, expected: {x: 1, y:0} as Point},
+        {orientation: W, position: {x: 1, y:1}, expected: {x: 0, y:1} as Point} ,
+        {orientation: S, position: {x: 1, y:1}, expected: {x: 1, y:0} as Point},
+    ])('heading $orientation position becomes $expected',
+        ({orientation, position, expected}) => {
+            const rover = new Rover("Mars Rover",
+                { position, orientation: orientation }, []);
+            const plateau = new Plateau(1,1);
+            rover.landOn(plateau);
+            expect(rover.move(plateau)).toEqual(expected);
+        });
 })
