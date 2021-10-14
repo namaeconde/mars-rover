@@ -144,24 +144,57 @@ describe('rover moves', () => {
         }
     })
 
-    it('should not move if position will collide with another rover', () => {
+    it('should not move if it did not land', () => {
         // GIVEN
         const plateau = new Plateau(1, 1);
         const landing1 = { position: {x: 0, y:0}, orientation: Orientation.N };
         const rover1 = new Rover('Rover 1', landing1, [M]);
-        const landing2 = { position: {x: 0, y:1}, orientation: Orientation.S };
-        const rover2 = new Rover('Rover 2', landing2, [M]);
-        rover1.landOn(plateau);
-        rover2.landOn(plateau);
 
         try {
             // WHEN
             rover1.move(plateau);
         } catch (error) {
             // THEN
-            expect(plateau.hasRoverAt(landing1.position)).toBeTruthy();
-            expect(plateau.hasRoverAt(landing2.position)).toBeTruthy();
-            expect(error.message).toEqual(`${rover1.name} can no longer move or it will collide with another rover at x:${landing2.position.x} y:${landing2.position.y}.`);
+            expect(error.message).toEqual(`${rover1.name} cannot move if it has not yet landed on a plateau.`);
+        }
+    })
+})
+
+describe('rover navigates', () => {
+    it('should navigate plateau based on instructions', () => {
+        // GIVEN
+        const plateau = new Plateau(2, 2);
+        const name = "Mars Rover";
+        const landing = { position: {x: 0, y:0}, orientation: Orientation.N };
+        const marsRover = new Rover(name, landing, [R, L, R, M]);
+        marsRover.landOn(plateau);
+
+        let turnLeftSpy, turnRightSpy, moveSpy: jest.SpyInstance;
+        turnLeftSpy = jest.spyOn(Rover.prototype, 'turnLeft');
+        turnRightSpy = jest.spyOn(Rover.prototype, 'turnRight');
+        moveSpy = jest.spyOn(Rover.prototype, 'move');
+
+        // WHEN
+        marsRover.navigateOn(plateau);
+
+        // THEN
+        expect(turnLeftSpy).toHaveBeenCalledTimes(1);
+        expect(turnRightSpy).toHaveBeenCalledTimes(2);
+        expect(moveSpy).toHaveBeenCalledTimes(1);
+    })
+
+    it('should not navigate if it did not land', () => {
+        // GIVEN
+        const plateau = new Plateau(1, 1);
+        const landing1 = { position: {x: 0, y:0}, orientation: Orientation.N };
+        const rover1 = new Rover('Rover 1', landing1, [M]);
+
+        try {
+            // WHEN
+            rover1.navigateOn(plateau);
+        } catch (error) {
+            // THEN
+            expect(error.message).toEqual(`${rover1.name} cannot execute instructions if it has not yet landed on a plateau.`);
         }
     })
 })
