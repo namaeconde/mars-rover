@@ -45,8 +45,8 @@ export class Rover {
         this.instructions = instructions;
     }
 
-    land(plateau: Plateau): void {
-        if (this.willFall(plateau, this.landing.position)) {
+    landOn(plateau: Plateau): void {
+        if (this.willFallFrom(plateau, this.landing.position)) {
             throw new Error('Rover cannot land, will fall from plateau.');
         }
 
@@ -59,12 +59,12 @@ export class Rover {
         plateau.rovers.push(this);
     }
 
-    navigate(plateau: Plateau): Point {
+    navigateOn(plateau: Plateau): Point {
         // Update rover position based on instruction
         return this.position;
     }
 
-    willFall(plateau: Plateau, position: Point): boolean {
+    willFallFrom(plateau: Plateau, position: Point): boolean {
         return position.x < 0 ||
             position.x > plateau.width ||
             position.y < 0 ||

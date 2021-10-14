@@ -19,11 +19,10 @@ export class Plateau {
     }
 
     hasRover(position: Point): boolean {
-        this.rovers.map((rover) => {
+        return this.rovers.some((rover) => {
             let roverPosition = rover.position;
             return position.x == roverPosition.x &&
                 position.y == roverPosition.y
         })
-        return false
     }
 }

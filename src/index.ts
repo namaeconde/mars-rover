@@ -67,7 +67,7 @@ const main = () => {
 
     // Deploy rovers to mars plateau
     rovers.map((rover) => {
-        rover.land(plateau);
+        rover.landOn(plateau);
     });
 
     console.log(plateau);
