@@ -59,7 +59,7 @@ export function createRovers(data: string[]): Rover[] {
     return rovers;
 }
 
-const main = () => {
+export function processDataFromFile(): string[] {
     const args = process.argv.slice(2);
     const fileName = args[0];
 
@@ -71,17 +71,25 @@ const main = () => {
         throw new Error("Invalid file input, it should ends with .txt");
     }
 
-    const [plateauData, ...roversData] = readFromFile(fileName);
-    let plateau = createPlateau(plateauData);
+    return readFromFile(fileName);
+}
 
-    let rovers = createRovers(roversData);
-
-    // Deploy rovers to mars plateau
+export function deployRoversToPlateau(rovers: Rover[], plateau: Plateau): void {
     rovers.map((rover) => {
         rover.landOn(plateau);
         const status = rover.navigateOn(plateau);
         console.log(status);
     });
+}
+
+const main = () => {
+    const [plateauData, ...roversData] = processDataFromFile();
+
+    let plateau = createPlateau(plateauData);
+
+    let rovers = createRovers(roversData);
+
+    deployRoversToPlateau(rovers, plateau);
 }
 
 /**
