@@ -4,7 +4,7 @@
   "description": "A squad of robotic rovers that will navigate mars",
   "main": "src/index.ts",
   "scripts": {
-    "test": "jest src/test/*.test.ts --verbose",
+    "test": "jest src/tests/*.test.ts --verbose",
     "start": "ts-node src/index.ts"
   },
   "repository": {

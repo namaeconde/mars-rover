@@ -43,7 +43,7 @@ describe('create plateau based on input', () => {
 
     it('should throw error from invalid plateau dimensions', () => {
         // GIVEN
-        const data = 'Plateau: test test'
+        const data = 'Plateau: tests tests'
 
         try {
             // WHEN
