@@ -36,13 +36,19 @@ Expected Output:
 Rover1:1 3 N
 Rover2:5 1 E
 ```
-Task:
 
 To run the application:
 Preq: to have .txt that has inputs needed to deploy rovers on mars plateau.
 ```
 $ npm start input.txt
-Rover1:1 3 N
-Rover2:5 1 E
+Initializing mars plateau. . .
+Initializing rovers. . .
+Rover1 is at x:1 y:3 facing N.
+Rover2 is at x:5 y:1 facing E.
 $
+```
+
+To run tests:
+```
+$ npm test
 ```
