@@ -80,4 +80,29 @@ describe('create rovers based on input', () => {
         expect(rover2.instructions).toEqual('MMRMMRMRRM'.split(''));
 
     })
+
+    it('should return correct rovers from valid inputs interchanged', () => {
+      // GIVEN
+      const data = [
+          'Rover1 Landing:1 2 N',
+          'Curiousity Landing:3 3 E',
+          'Curiousity Instructions:MMRMMRMRRM',
+          'Rover1 Instructions:LMLMLMLMM',
+      ]
+
+      // WHEN
+      let actualRovers = createRovers(data);
+      let [ rover1, rover2 ] = actualRovers;
+
+      // THEN
+      expect(actualRovers.length).toEqual(2);
+      expect(rover1.name).toEqual('Rover1');
+      expect(rover1.landing).toEqual({position: {x: 1, y: 2}, orientation: Orientation.N});
+      expect(rover1.instructions).toEqual('LMLMLMLMM'.split(''));
+
+      expect(rover2.name).toEqual('Curiousity');
+      expect(rover2.landing).toEqual({position: {x: 3, y: 3}, orientation: Orientation.E});
+      expect(rover2.instructions).toEqual('MMRMMRMRRM'.split(''));
+
+  })
 })

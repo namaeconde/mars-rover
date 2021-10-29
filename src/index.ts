@@ -25,38 +25,77 @@ export function createPlateau(data: string): Plateau {
     return new Plateau(width, height);
 }
 
-export function createRovers(data: string[]): Rover[] {
+function getLandingData(dataStr: string): any {
+  const [x, y, orientation] = dataStr.split(":")[1].trim().split(" ");
+
+  if (isNaN(Number(x))||
+      isNaN(Number(y))) {
+      throw Error("Invalid landing positions.");
+  }
+
+  if (!Object.values(Orientation).includes(<Orientation>orientation)) {
+      throw Error("Invalid orientation.");
+  }
+
+  return { x: Number(x), y: Number(y), orientation: <Orientation>orientation }
+}
+
+function getInstructionsData(dataStr: string): any {
+  return dataStr.split(":")[1].trim().split("");
+}
+
+export function createRovers(data: string[]): any {
     if (!data || data.length < 1) {
         throw new Error("Insufficient data to create rovers.");
     }
 
     console.log("Initializing rovers. . .");
-    let rovers: Rover[] = [];
+    let roverMaps = new Map();
     while (data.length > 0) {
-        const [landingData, instructionsData, ...roversData] = data;
+      const [roverData, ...rest] = data; // Rover1 Landing:1 2 N, ...
 
-        const roverName = landingData.split(":")[0].replace("Landing", "").trim();
+      const roverName = roverData.split(" ")[0].trim(); // Rover1
+      let landingData: any = {};
+      let instructionsData: string[] = [];
 
-        const [x, y, orientation] = landingData.split(":")[1].trim().split(" ");
-
-        if (isNaN(Number(x))||
-            isNaN(Number(y))) {
-            throw Error("Invalid landing positions.");
+      // Check if roverData is about Landing
+      if (roverData.indexOf("Landing") > 0) {
+        // Get Landing Data
+        landingData = getLandingData(roverData);
+        // Check if roverName is already in list of rovers
+        let rover = roverMaps.get(roverName);
+        if (rover) {
+          // Update existing rover
+          rover.landing = { position: { x: Number(landingData.x), y: Number(landingData.y) }, orientation: <Orientation>landingData.orientation };
+        } else {
+          // Create new rover
+          const { x, y, orientation } = landingData;
+          let newRover = new Rover(roverName,
+              { position: { x: Number(x), y: Number(y) }, orientation: <Orientation>orientation },
+              instructionsData);
+          roverMaps.set(roverName, newRover);
         }
+      } else if (roverData.indexOf("Instructions") > 0) {
+        // Get Instructions Data
+        instructionsData = getInstructionsData(roverData);
 
-        if (!Object.values(Orientation).includes(<Orientation>orientation)) {
-            throw Error("Invalid orientation.");
+        // Check if roverName is already in list of rovers
+        let rover = roverMaps.get(roverName);
+        if (rover) {
+          // Update existing rover
+          rover.instructions = instructionsData;
+        } else {
+          // Create new rover
+          let newRover = new Rover(roverName,
+              { position: { x: Number(landingData.x), y: Number(landingData.y) }, orientation: <Orientation>landingData.orientation },
+              instructionsData);
+          roverMaps.set(roverName, newRover);
         }
-
-        const instructions = instructionsData.split(":")[1].trim().split("");
-
-        let rover = new Rover(roverName,
-            { position: { x: Number(x), y: Number(y) }, orientation: <Orientation>orientation },
-            instructions);
-        rovers.push(rover);
-        data = roversData;
+      }
+      data = rest;
     }
-    return rovers;
+
+    return Array.from(roverMaps.values()); ;
 }
 
 export function processDataFromFile(): string[] {
