@@ -55,13 +55,11 @@ export function createRovers(data: string[]): any {
       const [roverData, ...rest] = data; // Rover1 Landing:1 2 N, ...
 
       const roverName = roverData.split(" ")[0].trim(); // Rover1
-      let landingData: any = {};
-      let instructionsData: string[] = [];
 
       // Check if roverData is about Landing
       if (roverData.indexOf("Landing") > 0) {
         // Get Landing Data
-        landingData = getLandingData(roverData);
+        let landingData = getLandingData(roverData);
         // Check if roverName is already in list of rovers
         let rover = roverMaps.get(roverName);
         if (rover) {
@@ -77,7 +75,7 @@ export function createRovers(data: string[]): any {
         }
       } else if (roverData.indexOf("Instructions") > 0) {
         // Get Instructions Data
-        instructionsData = getInstructionsData(roverData);
+        let instructionsData = getInstructionsData(roverData);
 
         // Check if roverName is already in list of rovers
         let rover = roverMaps.get(roverName);
