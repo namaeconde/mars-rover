@@ -72,7 +72,7 @@ export function createRovers(data: string[]): any {
           const { x, y, orientation } = landingData;
           let newRover = new Rover(roverName,
               { position: { x: Number(x), y: Number(y) }, orientation: <Orientation>orientation },
-              instructionsData);
+              null);
           roverMaps.set(roverName, newRover);
         }
       } else if (roverData.indexOf("Instructions") > 0) {
@@ -87,7 +87,7 @@ export function createRovers(data: string[]): any {
         } else {
           // Create new rover
           let newRover = new Rover(roverName,
-              { position: { x: Number(landingData.x), y: Number(landingData.y) }, orientation: <Orientation>landingData.orientation },
+              null,
               instructionsData);
           roverMaps.set(roverName, newRover);
         }
